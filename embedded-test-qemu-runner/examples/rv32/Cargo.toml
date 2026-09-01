@@ -1,0 +1,31 @@
+# Detached from the runner workspace: this is a standalone example.
+[workspace]
+
+[package]
+name = "qemu-rv32-example"
+version = "0.1.0"
+edition = "2021"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(rust_analyzer)'] }
+
+[dev-dependencies]
+riscv-rt = { version = "0.18", features = ["memory"] }
+embedded-test = "0.7"
+
+[lib]
+test = false
+bench = false
+
+[[test]]
+name = "smoke"
+harness = false
+
+[profile.dev]
+opt-level = "s"
+debug = true
+
+[profile.release]
+opt-level = "s"
+debug = true
+lto = true

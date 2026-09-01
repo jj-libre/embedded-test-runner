@@ -1,0 +1,41 @@
+{
+    // Points rust-analyzer's Debug lens at Renode instead of the host. Pinned
+    // because it would otherwise take the first installed engine.
+    "rust-analyzer.debug.engine": "vadimcn.vscode-lldb",
+    "rust-analyzer.testExplorer": true,
+
+    // Merged over the config the lens generates, which carries the ELF and test.
+    "rust-analyzer.debug.engineSettings": {
+        "lldb": {
+            "initCommands": [
+                "command script import ${workspaceFolder}/../../../.vscode/lldb_runner.py",
+                // Relays the session past a Renode stub that reports every stop
+                // twice. Drop it, and the import above stands alone, once that
+                // is fixed upstream.
+                "command script import ${workspaceFolder}/../../../.vscode/lldb_renode.py",
+                // Renode arms nothing otherwise: LLDB leaves the breakpoint
+                // unresolved and never puts a Z packet on the wire.
+                "settings set target.require-hardware-breakpoint true"
+            ],
+            // Passed, not inferred: CARGO_TARGET_DIR can move the ELF elsewhere.
+            "processCreateCommands": ["renode-connect ${workspaceFolder}"],
+            "postRunCommands": [
+                // The halted guest reports SIGTRAP on connect.
+                "process handle SIGTRAP --stop false --notify false",
+                // Renode pauses the emulation when the run ends and reports
+                // that as SIGINT. Nobody interrupted anything, so let the
+                // session end instead of surfacing an exception.
+                "process handle SIGINT --stop false --notify false",
+                // Breakpoints predate the module placement, which does not
+                // re-resolve them, so each one would silently miss.
+                "breakpoint disable",
+                "breakpoint enable",
+                // Surface at a breakpoint rather than at the reset vector.
+                "continue"
+            ],
+            // Renode exits with the guest, but only once the test finishes; a
+            // session ended before that leaves it running.
+            "exitCommands": ["renode-disconnect"]
+        }
+    }
+}

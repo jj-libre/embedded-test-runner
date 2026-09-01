@@ -1,0 +1,57 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug tests",
+            "type": "lldb",
+            "request": "launch",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run"
+                ],
+                "filter": {
+                    "name": "smoke",
+                    "kind": "test"
+                }
+            },
+            "args": [
+                "run",
+                "${input:test}"
+            ],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug runner",
+            "type": "lldb",
+            "request": "launch",
+            "cargo": {
+                "cwd": "${workspaceFolder}/../../..",
+                "args": [
+                    "build",
+                    "--package",
+                    "embedded-test-host-runner"
+                ]
+            },
+            "args": [
+                "--timeout",
+                "10",
+                "${input:elf}"
+            ],
+            "cwd": "${workspaceFolder}"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "test",
+            "type": "promptString",
+            "description": "Test to run",
+            "default": "tests::it_fails"
+        },
+        {
+            "id": "elf",
+            "type": "promptString",
+            "description": "Test binary, as cargo passes it to the runner"
+        }
+    ]
+}

@@ -1,0 +1,9 @@
+[target.armv7a-none-eabi]
+runner = [
+  "embedded-test-qemu-runner",
+  "--qemu", "qemu-system-arm -machine virt -cpu cortex-a15 -nographic",
+  "--timeout", "10",
+]
+
+[build]
+target = "armv7a-none-eabi"

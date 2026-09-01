@@ -1,0 +1,21 @@
+# Detached from the runner workspace: this is a standalone example.
+[workspace]
+
+[package]
+name = "host-std-example"
+version = "0.1.0"
+edition = "2021"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(rust_analyzer)'] }
+
+[dev-dependencies]
+embedded-test = { version = "0.7", default-features = false, features = ["std"] }
+
+[lib]
+test = false
+bench = false
+
+[[test]]
+name = "smoke"
+harness = false

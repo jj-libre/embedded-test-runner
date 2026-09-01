@@ -1,0 +1,33 @@
+# Detached from the runner workspace: this is a standalone example.
+[workspace]
+
+[package]
+name = "qemu-aarch64-example"
+version = "0.1.0"
+edition = "2021"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(rust_analyzer)'] }
+
+[dev-dependencies]
+aarch64-rt = { version = "0.4", default-features = false, features = ["el1"] }
+embedded-test = "0.7"
+
+[lib]
+test = false
+bench = false
+
+[[test]]
+name = "smoke"
+harness = false
+
+[profile.dev]
+opt-level = "s"
+debug = true
+panic = "abort"
+
+[profile.release]
+opt-level = "s"
+debug = true
+lto = true
+panic = "abort"

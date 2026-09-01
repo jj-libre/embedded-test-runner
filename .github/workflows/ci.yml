@@ -1,0 +1,152 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+  RENODE_VERSION: 1.16.1+20260821gitd9c416e99
+
+jobs:
+  commits:
+    name: commit messages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: cocogitto/cocogitto-action@v4
+        with:
+          command: check
+
+  check:
+    name: format, lint, test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    env:
+      RUSTFLAGS: -D warnings
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --all --check
+      - run: cargo clippy --all-targets
+      - run: cargo test
+
+  coverage:
+    name: coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: llvm-tools-preview
+      - uses: taiki-e/install-action@cargo-llvm-cov
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo llvm-cov --workspace --summary-only --ignore-filename-regex "test-util|xtask"
+
+  mutation:
+    name: mutation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: taiki-e/install-action@cargo-mutants
+      - uses: Swatinem/rust-cache@v2
+      - run: |
+          cargo mutants --no-shuffle \
+            --package embedded-test-runner-core \
+            --package embedded-test-host-runner \
+            --package embedded-test-qemu-runner \
+            --package embedded-test-renode-runner
+      - uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: mutants.out
+          path: mutants.out
+
+  package:
+    name: publish (dry run)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo publish --dry-run --workspace
+
+  host-examples:
+    name: embedded-test-host-runner/examples/std (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo xtask examples test --example embedded-test-host-runner/examples/std
+
+  qemu-examples:
+    name: ${{ matrix.example }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - example: embedded-test-qemu-runner/examples/cortex-m
+            target: thumbv7m-none-eabi
+            packages: qemu-system-arm
+          - example: embedded-test-qemu-runner/examples/aarch32
+            target: armv7a-none-eabi
+            packages: qemu-system-arm
+          - example: embedded-test-qemu-runner/examples/aarch64
+            target: aarch64-unknown-none
+            packages: qemu-system-arm
+          - example: embedded-test-qemu-runner/examples/rv32
+            target: riscv32imac-unknown-none-elf
+            packages: qemu-system-misc
+          - example: embedded-test-qemu-runner/examples/rv64
+            target: riscv64gc-unknown-none-elf
+            packages: qemu-system-misc
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - uses: Swatinem/rust-cache@v2
+      - run: sudo apt-get update && sudo apt-get install -y ${{ matrix.packages }}
+      - run: cargo xtask examples test --example ${{ matrix.example }}
+
+  renode-examples:
+    name: ${{ matrix.example }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - example: embedded-test-renode-runner/examples/cortex-m
+            target: thumbv7m-none-eabi
+          - example: embedded-test-renode-runner/examples/aarch32
+            target: armv7a-none-eabi
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - uses: Swatinem/rust-cache@v2
+      - name: install Renode
+        run: |
+          mkdir -p "$HOME/renode"
+          curl -fsSL "https://builds.renode.io/renode-${RENODE_VERSION}.linux-portable.tar.gz" \
+            | tar xz -C "$HOME/renode" --strip-components=1
+          echo "RENODE=$HOME/renode/renode" >> "$GITHUB_ENV"
+      - run: cargo xtask examples test --example ${{ matrix.example }}

@@ -1,0 +1,36 @@
+[package]
+name = "embedded-test-runner-core"
+description = "Shared core for embedded-test runners: ELF discovery, verdict mapping, and libtest wiring."
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+categories = [
+    "embedded",
+    "development-tools::testing",
+]
+keywords = ["embedded", "testing", "cargo-runner", "embedded-test"]
+readme = "README.md"
+exclude = ["tests/"]
+
+[lints]
+workspace = true
+
+[dependencies]
+anyhow.workspace = true
+clap.workspace = true
+libtest-mimic.workspace = true
+object.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+wait-timeout.workspace = true
+
+[dev-dependencies]
+test-util.workspace = true
+
+[[test]]
+name = "runner_main"
+harness = false

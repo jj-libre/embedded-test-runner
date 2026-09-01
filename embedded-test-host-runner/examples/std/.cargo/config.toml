@@ -1,0 +1,2 @@
+[target.'cfg(all())']
+runner = "embedded-test-host-runner --timeout 10"

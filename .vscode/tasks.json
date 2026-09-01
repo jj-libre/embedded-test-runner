@@ -1,0 +1,50 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Format",
+            "type": "cargo",
+            "command": "fmt",
+            "args": [
+                "--all",
+                "--check"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Lint",
+            "type": "cargo",
+            "command": "clippy",
+            "args": [
+                "--all-targets"
+            ],
+            "problemMatcher": [
+                "$rustc"
+            ]
+        },
+        {
+            "label": "Test",
+            "type": "cargo",
+            "command": "test",
+            "problemMatcher": [
+                "$rustc"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Check examples",
+            "type": "cargo",
+            "command": "xtask",
+            "args": [
+                "examples",
+                "test"
+            ],
+            "problemMatcher": [
+                "$rustc"
+            ]
+        }
+    ]
+}

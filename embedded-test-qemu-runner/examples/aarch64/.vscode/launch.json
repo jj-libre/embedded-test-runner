@@ -1,0 +1,71 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // Debugs the test itself, inside QEMU. "launch" rather than
+            // "attach" only because the cargo key exists on launch alone; it
+            // resolves the hash-named test binary for symbols, and
+            // processCreateCommands connects instead of running it locally.
+            "name": "Debug test",
+            "type": "lldb",
+            "request": "launch",
+            "preLaunchTask": "Await debugger",
+            "cargo": {
+                "args": ["test", "--no-run"],
+                "filter": { "name": "smoke", "kind": "test" }
+            },
+            "processCreateCommands": [
+                // QEMU reports no load address, so the module has to be placed
+                // at the addresses it was linked for, before connecting.
+                // Bind the result: an unbound SBError prints as "error: <NULL>".
+                "script target = lldb.debugger.GetSelectedTarget(); _ = target.SetModuleLoadAddress(target.GetModuleAtIndex(0), 0)",
+                "gdb-remote localhost:3333"
+            ],
+            // Order matters, and every line earns its place.
+            "postRunCommands": [
+                // The halted guest reports SIGTRAP on connect; without this a
+                // later one would surface as an exception. Breakpoints are
+                // attributed before signal handling, so they still stop.
+                "process handle SIGTRAP --stop false --notify false",
+                // The editor's breakpoints are created before the slide above,
+                // and the slide does not re-resolve them, so each one silently
+                // misses. Toggling re-resolves them. Enabling all is safe: a
+                // disabled breakpoint is never sent to the debugger at all.
+                "breakpoint disable",
+                "breakpoint enable",
+                // Leaves the reset vector, so the session surfaces at a
+                // breakpoint rather than as a signal. Safe only after the two
+                // lines above: the breakpoints now exist and resolve. Drop this
+                // line to inspect the guest from reset instead.
+                "continue"
+            ],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            // Debugs the runner, not the test. Builds it from the repo root and
+            // runs it here, against a binary you pass by path.
+            "name": "Debug runner",
+            "type": "lldb",
+            "request": "launch",
+            "cargo": {
+                "cwd": "${workspaceFolder}/../../..",
+                "args": ["build", "--package", "embedded-test-qemu-runner"]
+            },
+            "args": [
+                "--qemu",
+                "qemu-system-aarch64 -machine virt -cpu cortex-a53 -nographic",
+                "--timeout",
+                "10",
+                "${input:elf}"
+            ],
+            "cwd": "${workspaceFolder}"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "elf",
+            "type": "promptString",
+            "description": "Test binary, as cargo passes it to the runner"
+        }
+    ]
+}

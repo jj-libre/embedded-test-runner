@@ -1,0 +1,14 @@
+{
+    "rust-analyzer.linkedProjects": [
+        "Cargo.toml",
+        // "embedded-test-host-runner/examples/std/Cargo.toml",
+        // "embedded-test-qemu-runner/examples/cortex-m/Cargo.toml",
+        // "embedded-test-qemu-runner/examples/aarch32/Cargo.toml",
+        // "embedded-test-qemu-runner/examples/aarch64/Cargo.toml",
+        // "embedded-test-qemu-runner/examples/rv32/Cargo.toml",
+        // "embedded-test-qemu-runner/examples/rv64/Cargo.toml",
+        // "embedded-test-renode-runner/examples/cortex-m/Cargo.toml",
+        // "embedded-test-renode-runner/examples/aarch32/Cargo.toml"
+    ],
+    "rust-analyzer.testExplorer": true
+}
