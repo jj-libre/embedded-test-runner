@@ -1,0 +1,13 @@
+cpu: CPU.ARMv7A @ sysbus
+    cpuType: "cortex-a9"
+
+// The vector table is linked at 0, where the CPU starts after reset.
+rom: Memory.MappedMemory @ sysbus 0x0
+    size: 0x100000
+
+ram: Memory.MappedMemory @ sysbus 0x40000000
+    size: 0x100000
+
+semihosting: CPU.SemihostingHandler @ cpu
+
+console: UART.SemihostingUart @ semihosting .InputOutputError

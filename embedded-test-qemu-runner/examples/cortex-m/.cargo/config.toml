@@ -1,0 +1,11 @@
+[target.thumbv7m-none-eabi]
+runner = [
+  "embedded-test-qemu-runner",
+  "--qemu",
+  "qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic",
+  "--timeout",
+  "10",
+]
+
+[build]
+target = "thumbv7m-none-eabi"

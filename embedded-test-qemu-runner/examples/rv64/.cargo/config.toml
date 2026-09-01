@@ -1,0 +1,13 @@
+[target.riscv64gc-unknown-none-elf]
+# Reduce .eh_frame emission from user code; the actual fix for the
+# R_RISCV_32_PCREL overflow lives in device.x as a /DISCARD/ rule, since this
+# rustflag alone doesn't eliminate all .eh_frame inputs (deps still emit some).
+rustflags = ["-C", "force-unwind-tables=no"]
+runner = [
+  "embedded-test-qemu-runner",
+  "--qemu", "qemu-system-riscv64 -machine virt -cpu rv64 -bios none -nographic",
+  "--timeout", "10",
+]
+
+[build]
+target = "riscv64gc-unknown-none-elf"

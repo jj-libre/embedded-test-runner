@@ -1,0 +1,9 @@
+[target.riscv32imac-unknown-none-elf]
+runner = [
+  "embedded-test-qemu-runner",
+  "--qemu", "qemu-system-riscv32 -machine virt -cpu rv32 -bios none -nographic",
+  "--timeout", "10",
+]
+
+[build]
+target = "riscv32imac-unknown-none-elf"

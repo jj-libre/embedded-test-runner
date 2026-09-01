@@ -1,0 +1,33 @@
+[package]
+name = "embedded-test-qemu-runner"
+description = "Cargo runner that executes embedded-test suites inside QEMU instead of on a probe."
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+categories = [
+    "embedded",
+    "command-line-utilities",
+    "development-tools::testing",
+]
+keywords = ["embedded", "qemu", "testing", "cargo-runner", "embedded-test"]
+readme = "README.md"
+exclude = ["resources/", "tests/"]
+
+[lints]
+workspace = true
+
+[dependencies]
+embedded-test-runner-core.workspace = true
+anyhow.workspace = true
+clap.workspace = true
+shell-words.workspace = true
+
+[dev-dependencies]
+test-util.workspace = true
+
+[[test]]
+name = "emulator_argv"
+harness = false

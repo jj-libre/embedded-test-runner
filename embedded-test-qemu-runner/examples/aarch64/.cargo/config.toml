@@ -1,0 +1,12 @@
+[target.aarch64-unknown-none]
+runner = [
+  "embedded-test-qemu-runner",
+  # Note: no `-bios none` here — qemu-system-aarch64 doesn't recognize the
+  # `none` keyword (treats it as a filename and errors out). With `-kernel <elf>`
+  # the firmware-boot path is overridden anyway.
+  "--qemu", "qemu-system-aarch64 -machine virt -cpu cortex-a53 -nographic",
+  "--timeout", "10",
+]
+
+[build]
+target = "aarch64-unknown-none"

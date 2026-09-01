@@ -1,0 +1,29 @@
+{
+    // Points rust-analyzer's Debug lens at QEMU instead of the host. Pinned
+    // because it would otherwise take the first installed engine.
+    "rust-analyzer.debug.engine": "vadimcn.vscode-lldb",
+    "rust-analyzer.testExplorer": true,
+
+    // Merged over the config the lens generates, which carries the ELF and test.
+    "rust-analyzer.debug.engineSettings": {
+        "lldb": {
+            "initCommands": [
+                "command script import ${workspaceFolder}/../../../.vscode/lldb_runner.py"
+            ],
+            // Passed, not inferred: CARGO_TARGET_DIR can move the ELF elsewhere.
+            "processCreateCommands": ["runner-connect ${workspaceFolder}"],
+            "postRunCommands": [
+                // The halted guest reports SIGTRAP on connect.
+                "process handle SIGTRAP --stop false --notify false",
+                // Breakpoints predate the module placement, which does not
+                // re-resolve them, so each one would silently miss.
+                "breakpoint disable",
+                "breakpoint enable",
+                // Surface at a breakpoint rather than at the reset vector.
+                "continue"
+            ],
+            // QEMU does not always exit with the guest while attached.
+            "exitCommands": ["runner-disconnect"]
+        }
+    }
+}

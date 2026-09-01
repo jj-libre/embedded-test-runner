@@ -1,0 +1,11 @@
+[target.armv7a-none-eabi]
+runner = [
+  "embedded-test-renode-runner",
+  "--platform",
+  "aarch32.repl",
+  "--timeout",
+  "10",
+]
+
+[build]
+target = "armv7a-none-eabi"

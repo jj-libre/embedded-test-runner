@@ -1,0 +1,10 @@
+{
+    "recommendations": [
+        "rust-lang.rust-analyzer",
+        "vadimcn.vscode-lldb",
+        "probe-rs.probe-rs-debugger",
+        "tamasfe.even-better-toml",
+        "github.vscode-github-actions",
+        "MermaidChart.vscode-mermaid-chart",
+    ]
+}

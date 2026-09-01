@@ -1,0 +1,40 @@
+{
+    "folders": [
+        {
+            "name": "embedded-test-runner",
+            "path": "."
+        },
+        {
+            "name": "host/std",
+            "path": "embedded-test-host-runner/examples/std"
+        },
+        {
+            "name": "qemu/cortex-m",
+            "path": "embedded-test-qemu-runner/examples/cortex-m"
+        },
+        {
+            "name": "qemu/aarch32",
+            "path": "embedded-test-qemu-runner/examples/aarch32"
+        },
+        {
+            "name": "qemu/aarch64",
+            "path": "embedded-test-qemu-runner/examples/aarch64"
+        },
+        {
+            "name": "qemu/rv32",
+            "path": "embedded-test-qemu-runner/examples/rv32"
+        },
+        {
+            "name": "qemu/rv64",
+            "path": "embedded-test-qemu-runner/examples/rv64"
+        },
+        {
+            "name": "renode/cortex-m",
+            "path": "embedded-test-renode-runner/examples/cortex-m"
+        },
+        {
+            "name": "renode/aarch32",
+            "path": "embedded-test-renode-runner/examples/aarch32"
+        }
+    ]
+}

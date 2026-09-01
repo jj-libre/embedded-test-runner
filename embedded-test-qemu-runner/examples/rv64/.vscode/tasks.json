@@ -1,0 +1,40 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            // Holds one test in QEMU with a GDB stub, for "Debug test" to
+            // attach to. Not type "cargo": rust-analyzer's task provider drops
+            // isBackground, and the debugger would wait for a task that by
+            // design never returns.
+            "label": "Await debugger",
+            "type": "process",
+            "command": "cargo",
+            "args": ["test", "--test", "smoke", "--", "${input:test}"],
+            // The port the runner serves on, and "Debug test" connects to.
+            "options": {
+                "env": { "EMBEDDED_TEST_DEBUG": "true", "EMBEDDED_TEST_GDB": "3333" }
+            },
+            "isBackground": true,
+            "presentation": { "reveal": "silent", "panel": "dedicated", "clear": true },
+            "problemMatcher": {
+                // Matches nothing: this task reports readiness, not problems.
+                "pattern": { "regexp": ".", "file": 1, "location": 2, "message": 3 },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "Compiling|Finished|Running",
+                    // Printed by the runner once the stub is up. Keep in step
+                    // with the runner's own wording.
+                    "endsPattern": "waiting for a debugger on port"
+                }
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "test",
+            "type": "promptString",
+            "description": "Test to debug, by name or a unique part of it",
+            "default": "tests::arithmetic_holds"
+        }
+    ]
+}

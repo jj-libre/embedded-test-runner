@@ -1,0 +1,9 @@
+{
+    "rust-analyzer.debug.engine": "vadimcn.vscode-lldb",
+    "rust-analyzer.testExplorer": true,
+    // The lens launches the test binary with libtest arguments, which
+    // embedded-test's std entry point does not parse. Neither rust-analyzer nor
+    // an adapter can rewrite them, so debug from the "Debug tests"
+    // configuration in launch.json instead.
+    "rust-analyzer.lens.debug.enable": false
+}

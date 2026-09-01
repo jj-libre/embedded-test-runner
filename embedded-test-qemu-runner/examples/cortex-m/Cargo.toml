@@ -1,0 +1,32 @@
+# Detached from the runner workspace: this is a standalone example.
+[workspace]
+
+[package]
+name = "qemu-cortex-m-example"
+version = "0.1.0"
+edition = "2021"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(rust_analyzer)'] }
+
+[dev-dependencies]
+cortex-m = "0.7"
+cortex-m-rt = "0.7"
+embedded-test = "0.7"
+
+[lib]
+test = false
+bench = false
+
+[[test]]
+name = "smoke"
+harness = false
+
+[profile.dev]
+opt-level = "s"
+debug = true
+
+[profile.release]
+opt-level = "s"
+debug = true
+lto = true
