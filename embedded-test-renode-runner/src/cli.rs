@@ -20,7 +20,7 @@ pub(crate) struct Cli {
     #[arg(long, value_name = "FILE")]
     pub(crate) script: Option<PathBuf>,
 
-    /// Renode executable. Semihosting needs a nightly from builds.renode.io.
+    /// Renode executable. Semihosting needs 1.17.0 or later.
     #[arg(long, default_value = DEFAULT_EMULATOR, env = "RENODE", value_name = "PATH")]
     pub(crate) renode: PathBuf,
 

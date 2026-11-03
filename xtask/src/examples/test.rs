@@ -21,7 +21,7 @@ pub(crate) struct TestExamples {
     #[command(flatten)]
     selection: Selection,
 
-    /// Renode executable. Semihosting needs a nightly from builds.renode.io.
+    /// Renode executable. Semihosting needs 1.17.0 or later.
     #[arg(long, default_value = "renode", env = "RENODE")]
     renode: PathBuf,
 }

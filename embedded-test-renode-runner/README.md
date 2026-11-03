@@ -13,10 +13,9 @@ cargo install embedded-test-renode-runner          # from crates.io
 cargo install --path embedded-test-renode-runner   # from a checkout of this repo
 ```
 
-Renode must be a **nightly** build from <https://builds.renode.io>. Semihosting
-needs `CPU.SemihostingHandler`, which landed after release 1.16.1; on 1.16.1 the
-run fails with `Error E04: Could not resolve type: 'CPU.SemihostingHandler'`.
-Nightlies also report their version as `1.16.1`, so pin the dated filename.
+Renode must be **1.17.0** or later. Semihosting needs `CPU.SemihostingHandler`,
+which earlier releases lack; there the run fails with
+`Error E04: Could not resolve type: 'CPU.SemihostingHandler'`.
 
 ## Use
 

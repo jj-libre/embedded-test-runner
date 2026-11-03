@@ -60,7 +60,7 @@ mod tests {
 
     /// Verbatim from a Renode run of the cortex-m example.
     const FINISHED: &str = "\
-Renode, version 1.16.1 (1.16.1+20260821gitd9c416e99)
+Renode, version 1.17.0 (1.17.0+20260906gitf1dd1b4af)
 
 (board) sysbus LoadELF @smoke; cpu.semihosting Exited; cpu.semihosting ExitCode; quit
 True

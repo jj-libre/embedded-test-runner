@@ -9,7 +9,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  RENODE_VERSION: 1.16.1+20260821gitd9c416e99
+  RENODE_VERSION: 1.17.0
 
 jobs:
   commits:
