@@ -113,10 +113,10 @@ jobs:
             packages: qemu-system-arm
           - example: embedded-test-qemu-runner/examples/rv32
             target: riscv32imac-unknown-none-elf
-            packages: qemu-system-misc
+            packages: qemu-system-riscv
           - example: embedded-test-qemu-runner/examples/rv64
             target: riscv64gc-unknown-none-elf
-            packages: qemu-system-misc
+            packages: qemu-system-riscv
     steps:
       - uses: actions/checkout@v5
       - uses: dtolnay/rust-toolchain@stable
