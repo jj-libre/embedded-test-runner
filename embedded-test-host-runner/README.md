@@ -21,7 +21,7 @@ swaps semihosting for ordinary process arguments and exit codes.
 ```toml
 # Cargo.toml
 [dev-dependencies]
-embedded-test = { version = "0.7", default-features = false, features = ["std"] }
+embedded-test = { version = "0.7.3", default-features = false, features = ["std"] }
 ```
 
 ```toml
@@ -66,18 +66,6 @@ EMBEDDED_TEST_DEBUG=true cargo test --test smoke -- tests::arithmetic
 waiting for a debugger to run tests::arithmetic_holds
 ```
 
-## Windows
-
-The MSVC linker ignores `embedded-test.x`, leaving
-`embedded_test_linker_file_not_added_to_rustflags` and `_embedded_test_setup`
-unresolved. Alias them instead:
-
-```rust
-// build.rs
-println!("cargo::rustc-link-arg=/ALTERNATENAME:embedded_test_linker_file_not_added_to_rustflags=__embedded_test_start");
-println!("cargo::rustc-link-arg=/ALTERNATENAME:_embedded_test_setup=__embedded_test_default_setup");
-```
-
 ## Protocol
 
 ![Protocol](resources/img/protocol/protocol.svg)
@@ -99,7 +87,7 @@ println!("cargo::rustc-link-arg=/ALTERNATENAME:_embedded_test_setup=__embedded_t
 embedded-test = "0.7"
 
 [target.'cfg(not(target_os = "none"))'.dev-dependencies]
-embedded-test = { version = "0.7", default-features = false, features = ["std"] }
+embedded-test = { version = "0.7.3", default-features = false, features = ["std"] }
 ```
 
 ## Licence

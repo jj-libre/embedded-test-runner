@@ -10,7 +10,7 @@ edition = "2021"
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(rust_analyzer)'] }
 
 [dev-dependencies]
-embedded-test = { version = "0.7", default-features = false, features = ["std"] }
+embedded-test = { version = "0.7.3", default-features = false, features = ["std"] }
 
 [lib]
 test = false
