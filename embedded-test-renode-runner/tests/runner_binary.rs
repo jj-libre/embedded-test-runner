@@ -1,6 +1,6 @@
 //! The shipped binary, run as a binary.
 
-use test_util::{on_disk, run, valid_elf};
+use test_util::{on_disk, run, run_with_temp_dir, valid_elf};
 
 const BINARY: &str = env!("CARGO_BIN_EXE_embedded-test-renode-runner");
 
@@ -59,6 +59,32 @@ fn test_renode_that_never_starts_is_a_runner_error() {
     );
     assert_eq!(output.status.code(), Some(2), "{output}");
     assert!(output.stderr.contains("not a verdict"), "{output}");
+}
+
+#[test]
+fn test_unusable_temp_dir_is_a_runner_error() {
+    let elf = on_disk(&valid_elf());
+    let path = elf.path().display().to_string();
+    let temp_dir = elf.path().with_file_name("no-such-temp-dir");
+
+    let output = run_with_temp_dir(
+        BINARY,
+        &temp_dir,
+        [
+            "--platform",
+            "board.repl",
+            "--renode",
+            "no-such-renode",
+            path.as_str(),
+        ],
+    );
+    assert_eq!(output.status.code(), Some(2), "{output}");
+    assert!(
+        output
+            .stdout
+            .contains("creating a directory for the Renode config"),
+        "{output}"
+    );
 }
 
 #[test]

@@ -9,4 +9,4 @@ pub mod elf;
 mod process;
 
 pub use elf::{TempElf, on_disk, valid_elf};
-pub use process::{Run, run};
+pub use process::{Run, run, run_with_temp_dir};

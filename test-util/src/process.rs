@@ -2,6 +2,7 @@
 
 use std::ffi::OsStr;
 use std::fmt;
+use std::path::Path;
 use std::process::{Command, ExitStatus};
 
 /// How a binary exited and what it wrote.
@@ -29,7 +30,26 @@ where
     I: IntoIterator<Item = S>,
     S: AsRef<OsStr>,
 {
-    let output = Command::new(binary).args(args).output().unwrap();
+    capture(Command::new(binary).args(args))
+}
+
+/// Runs `binary` like [`run`], with `std::env::temp_dir` answering `temp_dir`.
+pub fn run_with_temp_dir<I, S>(binary: &str, temp_dir: &Path, args: I) -> Run
+where
+    I: IntoIterator<Item = S>,
+    S: AsRef<OsStr>,
+{
+    capture(
+        Command::new(binary)
+            .args(args)
+            .env("TMPDIR", temp_dir)
+            .env("TMP", temp_dir)
+            .env("TEMP", temp_dir),
+    )
+}
+
+fn capture(command: &mut Command) -> Run {
+    let output = command.output().unwrap();
 
     Run {
         status: output.status,
