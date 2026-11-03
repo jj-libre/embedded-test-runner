@@ -1,0 +1,27 @@
+coverage:
+  status:
+    project:
+      default:
+        informational: true
+    patch:
+      default:
+        informational: true
+comment: false
+component_management:
+  individual_components:
+    - component_id: core
+      name: embedded-test-runner-core
+      paths:
+        - embedded-test-runner-core/**
+    - component_id: host
+      name: embedded-test-host-runner
+      paths:
+        - embedded-test-host-runner/**
+    - component_id: qemu
+      name: embedded-test-qemu-runner
+      paths:
+        - embedded-test-qemu-runner/**
+    - component_id: renode
+      name: embedded-test-renode-runner
+      paths:
+        - embedded-test-renode-runner/**

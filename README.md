@@ -1,6 +1,8 @@
 # embedded-test-runner
 
 [![CI](https://img.shields.io/github/actions/workflow/status/jj-libre/embedded-test-runner/ci.yml?branch=main&label=CI)](https://github.com/jj-libre/embedded-test-runner/actions/workflows/ci.yml)
+[![coverage](https://codecov.io/gh/jj-libre/embedded-test-runner/graph/badge.svg)](https://app.codecov.io/gh/jj-libre/embedded-test-runner)
+[![licence](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue)](#licence)
 
 Cargo runners that execute [`embedded-test`](https://github.com/probe-rs/embedded-test)
 suites without a probe.

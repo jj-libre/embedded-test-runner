@@ -2,6 +2,8 @@
 
 [![crates.io](https://img.shields.io/crates/v/embedded-test-qemu-runner)](https://crates.io/crates/embedded-test-qemu-runner)
 [![CI](https://img.shields.io/github/actions/workflow/status/jj-libre/embedded-test-runner/ci.yml?branch=main&label=CI)](https://github.com/jj-libre/embedded-test-runner/actions/workflows/ci.yml)
+[![coverage](https://codecov.io/gh/jj-libre/embedded-test-runner/graph/badge.svg?component=qemu)](https://app.codecov.io/gh/jj-libre/embedded-test-runner/tree/main/embedded-test-qemu-runner)
+[![licence](https://img.shields.io/crates/l/embedded-test-qemu-runner)](https://github.com/jj-libre/embedded-test-runner#licence)
 
 A Cargo runner that executes [`embedded-test`](https://github.com/probe-rs/embedded-test)
 suites inside QEMU.
