@@ -52,7 +52,19 @@ jobs:
           components: llvm-tools-preview
       - uses: taiki-e/install-action@cargo-llvm-cov
       - uses: Swatinem/rust-cache@v2
-      - run: cargo llvm-cov --workspace --summary-only --ignore-filename-regex "test-util|xtask"
+      - run: cargo llvm-cov --workspace --lcov --output-path lcov.info --ignore-filename-regex "test-util|xtask"
+      - run: cargo llvm-cov report --summary-only --ignore-filename-regex "test-util|xtask"
+      - uses: minikin/cargo-crap@v1
+        with:
+          lcov: lcov.info
+          args: >-
+            --package embedded-test-runner-core
+            --package embedded-test-host-runner
+            --package embedded-test-qemu-runner
+            --package embedded-test-renode-runner
+          fail-above: true
+          fail-regression: false
+          comment: false
 
   mutation:
     name: mutation
