@@ -204,8 +204,8 @@ impl<'data, 'file> TestSection<'data, 'file> {
             fault,
         };
 
-        let [addr, path_addr, path_len] = self.tuple_at(address).map_err(&in_test)?;
-        let module_path = self.module_path(path_addr, path_len).map_err(&in_test)?;
+        let [addr, path_addr, path_len] = self.tuple_at(address).map_err(in_test)?;
+        let module_path = self.module_path(path_addr, path_len).map_err(in_test)?;
 
         Ok(TestMeta {
             name: format!("{module_path}::{}", descriptor.name),
