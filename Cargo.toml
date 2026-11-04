@@ -29,7 +29,7 @@ must_use_candidate = "allow"
 missing_errors_doc = "allow"
 
 [workspace.dependencies]
-embedded-test-runner-core = { path = "embedded-test-runner-core", version = "0.1.0" }
+embedded-test-runner-core = { path = "embedded-test-runner-core", version = "0.1.1" }
 test-util = { path = "test-util" }
 anyhow = "1"
 clap = { version = "4", features = ["derive", "env"] }

@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1](https://github.com/jj-libre/embedded-test-runner/compare/embedded-test-runner-core-v0.1.0...embedded-test-runner-core-v0.1.1) - 2026-11-04
+
+### Other
+
+- add Codecov and licence badges
+- *(core)* drop needless borrows
+
 ## [0.1.0](https://github.com/jj-libre/embedded-test-runner/releases/tag/embedded-test-runner-core-v0.1.0) - 2026-09-01
 
 ### Added
