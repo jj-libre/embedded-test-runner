@@ -19,6 +19,7 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: cocogitto/cocogitto-action@v4
         with:
           command: check
